@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход и регистрация</title>
+    <!-- Подключение шрифта Poppins из Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Подключение Font Awesome для иконок -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #adadad;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 100px;
+            justify-content: center;
+            margin-top: 20px;
+            flex: 1; /* Это заставит main занимать все доступное пространство, отталкивая footer вниз */
+        }
+
+        header {
+            background-color: #2980b9;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .logo-text {
+            color: white;
+            font-weight: 600;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            transform: translateY(-3px);
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Мобильная версия */
+        @media (max-width: 768px) {
+            .header-nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background-color: #2980b9;
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px 0;
+                transition: left 0.3s;
+            }
+            
+            .header-nav.active {
+                left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-link {
+                padding: 10px 0;
+            }
+        }
+
+        /* Анимация для иконок */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 80px; /* Для того чтобы форма не перекрывалась header */
+            margin-bottom: 40px; /* Добавим отступ снизу */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .switch-form a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        /* Обновленный стиль для футера */
+        footer {
+            background-color: #2980b9;
+            color: #fff;
+            padding: 40px 0 20px;
+            width: 100%;
+            margin-top: auto; /* Это гарантирует, что футер останется внизу */
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin: 15px;
+            text-align: center;
+        }
+
+        .footer-section i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            animation: pulse 2s infinite;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="icon.jpg" alt="Логотип GymBoss" class="logo-img">
+            <span class="logo-text">GymBoss</span>
+        </div>
+        
+        <!-- Навигационное меню с иконками -->
+        <nav class="header-nav">
+            <a href="inx.html" class="nav-link"><i class="fas fa-home"></i> Главная</a>
+            <a href="vhod.html" class="nav-link"><i class="fas fa-shopping-bag"></i> Регистрация</a>
+            <a href="lc.html" class="nav-link"><i class="fas fa-user"></i> Кабинет</a>
+            <a href="cart.html" class="nav-link cart-icon">
+                <i class="fas fa-shopping-cart"></i> Корзина
+                <span class="cart-counter">0</span>
+            </a>
+        </nav>
+        
+        <!-- Кнопка мобильного меню -->
+        <div class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+    
+    <!-- Контейнер для формы -->
+    <main>
+        <div class="container">
+            <h2 id="form-title">Вход</h2>
+
+            <!-- Форма Входа -->
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Электронная почта" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Пароль" required>
+                </div>
+                <button type="submit">Войти</button>
+            </form>
+
+            <!-- Форма Регистрации -->
+            <form id="register-form" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <input type="text" placeholder="Имя" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Электронная почта" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Пароль" required>
+                </div>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+
+            <!-- Ссылка для переключения между формами -->
+            <div class="switch-form">
+                <a href="#" id="switch-to-register">Создать аккаунт</a> | 
+                <a href="#" id="switch-to-login" style="display: none;">Уже есть аккаунт? Войти</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Красивый футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-info-circle"></i>
+                <h3>О нас</h3>
+                <p>GymBoss - магазин качественных спортивных добавок для профессионалов и любителей.</p>
+            </div>
+            
+            <div class="footer-section">
+                <i class="fas fa-store"></i>
+                <h3>GymBoss</h3>
+                <p>Мы предлагаем только сертифицированные продукты от ведущих мировых производителей.</p>
+            </div>
+            
+            <div class="footer-section">
+                <i class="fas fa-address-book"></i>
+                <h3>Контакты</h3>
+                <p>Email: info@gymboss.ru<br>Телефон: +7 (XXX) XXX-XX-XX<br>Адрес: г. Москва, ул. Спортивная, 1</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 GymBoss. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const formTitle = document.getElementById('form-title');
+
+        // Переключение на форму регистрации
+        switchToRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            formTitle.textContent = 'Регистрация';
+            switchToRegister.style.display = 'none';
+            switchToLogin.style.display = 'inline';
+        });
+
+        // Переключение на форму входа
+        switchToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            formTitle.textContent = 'Вход';
+            switchToRegister.style.display = 'inline';
+            switchToLogin.style.display = 'none';
+        });
+        
+        // Мобильное меню
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const headerNav = document.querySelector('.header-nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            headerNav.classList.toggle('active');
+        });
+        
+        // Обновление счетчика корзины (пример)
+        function updateCartCounter() {
+            const cartCounter = document.querySelector('.cart-counter');
+            // Здесь можно добавить логику получения количества товаров
+            cartCounter.textContent = '3'; // Примерное значение
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCounter();
+        });
+    </script>
+</body>
+</html>
